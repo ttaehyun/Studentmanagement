@@ -10,3 +10,9 @@ class StudentInfo {
 class Admin{
 
 };
+
+struct FileDictionary
+{
+	char id[10];
+	int pw;
+};
