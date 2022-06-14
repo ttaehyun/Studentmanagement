@@ -1,19 +1,10 @@
 #include<string>
+#include<iostream>
 #include<list>
 #include<map>
 using namespace std;
 
-class StudentInfo {
-private:
-	int StudentID;
-	char Name[30];
-	char Department;
-public:
-	void SelectShowInfo(char);
-	void AllShowInfo();
-};
-
- 
+// Struct StudentInfo
 struct StudentInfo {
 	int StudentID;
 	string Name;
@@ -27,6 +18,31 @@ list<StudentInfo> Infopack = {
 	{3, "Kodari", "EE"},
 	{4, "Gadari", "IRE"},
 	};
+
+// Admin - Show List
+void ShowList() {
+	for (auto iter = Infopack.begin(); iter != Infopack.end(); iter++) {
+		StudentInfo a = *iter;
+		cout << a.Name << " - Info"  << endl;
+		cout << "StudentID : " << a.StudentID << endl;
+		cout << "Department : " << a.Department << endl;
+		cout << endl;
+	}
+	cout << endl;
+}
+// Student - Show List
+void ShowListMe(string name) {
+	for (auto iter = Infopack.begin(); iter != Infopack.end(); iter++) {
+		StudentInfo a = *iter;
+		if (a.Name == name) {
+			cout << a.Name << " - Info" << endl;
+			cout << "StudentID : " << a.StudentID << endl;
+			cout << "Department : " << a.Department << endl;
+		}
+		else break;
+	}
+	cout << endl;
+}
 
 // ID, PW File
 class FileDictionary

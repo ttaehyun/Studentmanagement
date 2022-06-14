@@ -11,14 +11,19 @@ FileDictionary Diction;
 //func pack
 void Menu_print();
 void Admin_Menu();
-void LoggedAdmin(bool* , int);
+void LoggedAdmin(bool* , bool*, int);
 void Student_Menu();
-void LoggedStudent(bool* , int);
+void LoggedStudent(bool* ,bool*, int);
 int MenuSelect(string);
+
 void File_read();
 void Line_sprite(string, string*, string*);
 void File_write(string);
+
+bool AdminLogin(string*, string*);
+bool StudentLogin(string*, string*);
 bool Login(string, string* , string*);
+void Exit();
 
 // print menu
 void Menu_print() {
@@ -39,7 +44,7 @@ void Admin_Menu() {
 }
 
 // print Logged each Admin menu
-void LoggedAdmin(bool* main, int num) {
+void LoggedAdmin(bool* main,bool* loop_bool, int num) {
 	switch (num)
 	{
 	case 1:
@@ -47,10 +52,11 @@ void LoggedAdmin(bool* main, int num) {
 	case 2:
 		break;
 	case 3:
-
+		ShowList();
 		break;
 	case 4:
 		*main = true;
+		*loop_bool = true;
 		break;
 	case 5:
 		Exit();
@@ -63,6 +69,23 @@ void Student_Menu() {
 	cout << "1. View Table" << endl;
 	cout << "2. Main Menu" << endl;
 	cout << "3. Exit" << endl;
+}
+
+// print Logged each Student Menu
+void LoggedStudent(bool* main, bool* loop_bool,string* id, int num) {
+	switch (num)
+	{
+	case 1:
+		ShowListMe(*id);
+		break;
+	case 2:
+		*main = true;
+		*loop_bool = true;
+		break;
+	case 3:
+		Exit();
+		break;
+	}
 }
 
 // MenuSelect
@@ -150,20 +173,18 @@ void File_write(string IdPw) {
 }
 
 // Admin Login
-bool AdminLogin() {
-	string id, pw;
+bool AdminLogin(string* id, string* pw) {
 	bool Bool;
 	cout << "* Admin Login *" << endl;
-	Bool = Login("Admin", &id, &pw);
+	Bool = Login("Admin", &*id, &*pw);
 	return Bool;
 }
 
 // Student Login
-bool StudentLogin() {
-	string id, pw;
+bool StudentLogin(string *id, string *pw) {
 	cout << "* Student Login *" << endl;
 	bool Bool;
-	Bool = Login("Student", &id, &pw);
+	Bool = Login("Student", &*id, &*pw);
 	return Bool;
 }
 
