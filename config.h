@@ -2,7 +2,8 @@
 #include<string>
 #include<fstream>
 #include<map>
-#include "util.h"
+#include "Admin.h"
+
 using namespace std;
 
 //LoginDictionary variable
@@ -13,7 +14,7 @@ void Menu_print();
 void Admin_Menu();
 void LoggedAdmin(bool* , bool*, int);
 void Student_Menu();
-void LoggedStudent(bool* ,bool*, int);
+void LoggedStudent(bool* ,bool*, string*, int);
 int MenuSelect(string);
 
 void File_read();
@@ -50,6 +51,7 @@ void LoggedAdmin(bool* main,bool* loop_bool, int num) {
 	case 1:
 		break;
 	case 2:
+		Delete_Student();
 		break;
 	case 3:
 		ShowList();
@@ -207,10 +209,6 @@ bool Login(string classify, string* id, string* pw) {
 		return true;
 	}
 }
-
-// check id in FileDictionary(id)
-
-// check pw in FileDictionary(pw)
 
 // Exit program
 void Exit() {

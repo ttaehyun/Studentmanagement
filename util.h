@@ -39,7 +39,7 @@ void ShowListMe(string name) {
 			cout << "StudentID : " << a.StudentID << endl;
 			cout << "Department : " << a.Department << endl;
 		}
-		else break;
+		else continue;
 	}
 	cout << endl;
 }
