@@ -10,11 +10,15 @@ FileDictionary Diction;
 
 //func pack
 void Menu_print();
-int Menu_select();
+void Admin_Menu();
+void LoggedAdmin(bool* , int);
+void Student_Menu();
+void LoggedStudent(bool* , int);
+int MenuSelect(string);
 void File_read();
 void Line_sprite(string, string*, string*);
 void File_write(string);
-bool Login(string* , string*);
+bool Login(string, string* , string*);
 
 // print menu
 void Menu_print() {
@@ -24,46 +28,98 @@ void Menu_print() {
 	cout << "3. Exit" << endl;
 }
 
-// select Menu & return Menu_number
-int Menu_select() {
-	bool Bool = true;
-	bool check = true;
-
-	int menu_num =0;
-
-	while (Bool) {
-		//문자열로 입력되면 에러뜨는 현상 고쳐야됨
-		while (check) {
-			cout << "\nEnter menu(숫자로 입력) : ";
-			cin >> menu_num;
-			if (typeid(menu_num).name() == typeid(string).name()) {
-				cout << "숫자를 입력해주세요. " << endl;
-				check = true;
-			}
-			else					check = false;
-		}
-		if (menu_num == 1) {
-			Bool = false;
-		}	
-		else if(menu_num == 2) {
-			Bool = false;
-		}
-		else if (menu_num == 3) {
-			Bool = false;
-		}
-		else cout << "메뉴를 다시 입력해주세요. " << endl;
-	}
-	return menu_num;
+// print Admin menu
+void Admin_Menu() {
+	cout << "- Logged in as Admin -" << endl;
+	cout << "1. Add Students" << endl;
+	cout << "2. Delete Students" << endl;
+	cout << "3. View Table" << endl;
+	cout << "4. Main Menu" << endl;
+	cout << "5. Exit" << endl;
 }
+
+// print Logged each Admin menu
+void LoggedAdmin(bool* main, int num) {
+	switch (num)
+	{
+	case 1:
+		break;
+	case 2:
+		break;
+	case 3:
+
+		break;
+	case 4:
+		*main = true;
+		break;
+	case 5:
+		Exit();
+		break;
+	}
+}
+// print Student menu
+void Student_Menu() {
+	cout << "- Logged in as Admin -" << endl;
+	cout << "1. View Table" << endl;
+	cout << "2. Main Menu" << endl;
+	cout << "3. Exit" << endl;
+}
+
+// MenuSelect
+int MenuSelect(string purpose) {
+	bool check = true;
+	int num;
+	while (check) {
+		cout << "\nEnter menu(숫자로 입력) : ";
+		cin >> num;
+		if (typeid(num).name() == typeid(string).name()) {
+			cout << "숫자를 입력해주세요. " << endl;
+			check = true;
+		}
+		else {
+			if (purpose == "main") {
+				if (num <= 3) {
+					check = false;
+				}
+				else {
+					cout << "메뉴를 다시 입력해주세요. " << endl;
+					check = true;
+				}
+			}
+			else if (purpose == "Admin") {
+				if (num <= 5) {
+					check = false;
+				}
+				else {
+					cout << "메뉴를 다시 입력해주세요. " << endl;
+					check = true;
+				}
+			}
+			else if (purpose == "Student") {
+				if (num <= 3) {
+					check = false;
+				}
+				else {
+					cout << "메뉴를 다시 입력해주세요. " << endl;
+					check = true;
+				}
+			}
+		}
+	}
+	
+	return num;
+}
+
 // read file
 void File_read() {	//딕셔너리 만들어서 id, pw별로 리스트로 저장
-	string line, id, pw;
+	string line;
 	ifstream fin("Login.txt");
 	if (fin.fail()) {
 		cerr << "파일을 찾을 수 없음" << endl;
 		exit(100);
 	}
 	while (getline(fin, line)) {
+		string id, pw;
 		//line에 담겨 있는 id, pw분리 
 		Line_sprite(line, &id, &pw);
 		//cout << "id : " << id << "pw : " << pw << endl;
@@ -79,9 +135,10 @@ void Line_sprite(string line, string* id, string* pw) {
 	int index = line.length();
 	int space_index = line.find(" ");
 	*id = line.erase(space_index, index);
-	*pw = copy_line.erase(0, space_index);
+	*pw = copy_line.erase(0, space_index+1);	//인덱스번호가 한칸 뒤에 있다
 	
 }
+
 // wrtie file
 void File_write(string IdPw) {   
 	ofstream fout("Login.txt");   
@@ -95,12 +152,9 @@ void File_write(string IdPw) {
 // Admin Login
 bool AdminLogin() {
 	string id, pw;
-	cout << "* Admin Login *" << endl;
 	bool Bool;
-	Bool = Login(&id, &pw);
-	if (Bool == true) {
-		cout << "비번이 틀렸습니다." << endl;
-	}
+	cout << "* Admin Login *" << endl;
+	Bool = Login("Admin", &id, &pw);
 	return Bool;
 }
 
@@ -109,21 +163,28 @@ bool StudentLogin() {
 	string id, pw;
 	cout << "* Student Login *" << endl;
 	bool Bool;
-	Bool = Login(&id, &pw);
+	Bool = Login("Student", &id, &pw);
 	return Bool;
 }
 
 // Login id, pw
-bool Login(string* id, string* pw) {
+bool Login(string classify, string* id, string* pw) {
 	
 	cout << "ID : ";
 	cin >> *id;
 	cout << "PW : ";
 	cin >> *pw;
-	if (*pw == Diction.Find(*id)) {
+	string password = Diction.Find(*id);
+	if (*pw == password) {
 		return false;
 	}
-	else return true;
+	else if (*pw == "err") {
+		return true;
+	}
+	else {
+		cout << "비번이 틀렸습니다." << endl;
+		return true;
+	}
 }
 
 // check id in FileDictionary(id)

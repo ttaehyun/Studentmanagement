@@ -13,45 +13,78 @@ public:
 	void AllShowInfo();
 };
 
-void StudentInfo::SelectShowInfo(char name) {
-
-}
-
-void StudentInfo::AllShowInfo() {
-
-}
-
-class Admin{
-
+ 
+struct StudentInfo {
+	int StudentID;
+	string Name;
+	string Department;
 };
 
+// List Student Info 
+list<StudentInfo> Infopack = { 
+	{1, "ttaehyun", "AI"},
+	{2, "minari", "EE"},
+	{3, "Kodari", "EE"},
+	{4, "Gadari", "IRE"},
+	};
+
+// ID, PW File
 class FileDictionary
 {
 private:
-	map<string, string> IdPw;
+	map<string, string> IdPw_Admin;
+	map<string, string> IdPw_Student;
 public:
+	// id, pw append
 	void Dict_append(string id, string pw) {
-		IdPw.insert({id, pw});
+		if (id == "Admin") {
+			IdPw_Admin.insert({ id,pw });
+		}
+		else IdPw_Student.insert({ id,pw });
 	};
+
+	// id, pw Delete
 	void Dict_Del(string id) {
-		IdPw.erase(id);
+		if (id == "Admin") {
+			IdPw_Admin.erase(id);
+		}
+		else IdPw_Student.erase(id);
 	};
+
+	// 저장된 id,pw보여줌
 	void Show() {
-		for (auto iter = IdPw.begin(); iter != IdPw.end(); iter++)
+		for (auto iter = IdPw_Admin.begin(); iter != IdPw_Admin.end(); iter++)
+		{
+			cout << iter->first << " " << iter->second << endl;
+		}
+		cout << endl;
+		for (auto iter = IdPw_Student.begin(); iter != IdPw_Student.end(); iter++)
 		{
 			cout << iter->first << " " << iter->second << endl;
 		}
 		cout << endl;
 	}
+	// Find id in map
 	string Find(string id) {
-		return IdPw.find(id)->second;
+		if (id == "Admin") {
+			auto item = IdPw_Admin.find(id);
+			if (item != IdPw_Admin.end()) {
+				return item->second;
+			}
+			else {
+				cout << "존재하지 않는 ID입니다. " << endl;
+				return "err";
+			}
+		}
+		else {
+			auto item = IdPw_Student.find(id);
+			if (item != IdPw_Student.end()) {
+				return item->second;
+			}
+			else {
+				cout << "존재하지 않는 ID입니다. " << endl;
+				return "err";
+			}
+		}
 	}
 };
-
-//void FileDictionary::Dict_append(id, pw) {
-//	IdPw.insert({id, pw});
-//}
-
-//void FileDictionary::Dict_Del(char id, char pw) {
-//	IdPw.erase(id);
-//}
