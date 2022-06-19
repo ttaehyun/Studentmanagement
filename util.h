@@ -29,20 +29,27 @@ string EachStudentInfo::getName() {
 	return Name;
 }
 //List class studentInfo
-list<EachStudentInfo> ClassINFO = {
+class ListInfo : public EachStudentInfo {
+private:
+	list<EachStudentInfo> ClassINFO;
+public:
+	void DeleteList() {
+
+	}
+};
+list<EachStudentInfo> ClassINFO; /*= {
 	EachStudentInfo(1, "ttaehyun", "AI"),
 	EachStudentInfo(2, "minari", "EE"),
 	EachStudentInfo(3, "Kodari", "EE"),
 	EachStudentInfo(4, "Gadari", "IRE"),
 	EachStudentInfo(5, "Jota", "CS"),
-};
+};*/
 
 // Admin - Show List
 void ShowList() {
 	for (auto iter = ClassINFO.begin(); iter != ClassINFO.end(); iter++) {
 		EachStudentInfo a = *iter;
 		a.Show_Info();
-
 	}
 	cout << endl;
 }
@@ -82,6 +89,12 @@ public:
 		else IdPw_Student.erase(id);
 	};
 
+	string Content() {
+		for (auto iter = IdPw_Admin.begin(); iter != IdPw_Admin.end(); iter++)
+		{
+			return iter->first + " " + iter->second;
+		}
+	}
 	// 저장된 id,pw보여줌
 	void Show() {
 		for (auto iter = IdPw_Admin.begin(); iter != IdPw_Admin.end(); iter++)

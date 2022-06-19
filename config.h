@@ -49,9 +49,11 @@ void LoggedAdmin(bool* main,bool* loop_bool, int num) {
 	switch (num)
 	{
 	case 1:
+		Add_Student(Diction);
+		File_write(Diction.Content());
 		break;
 	case 2:
-		Delete_Student();
+		Delete_Student(Diction, ClassINFO);
 		break;
 	case 3:
 		ShowList();
@@ -165,13 +167,14 @@ void Line_sprite(string line, string* id, string* pw) {
 }
 
 // wrtie file
-void File_write(string IdPw) {   
+void File_write(string content) {   
 	ofstream fout("Login.txt");   
 	if (fout.fail()) {
 		cerr << "파일을 찾을 수 없음" << endl;
 		exit(100);
 	}
-
+	fout.write(content.c_str(), content.size());
+	fout.close();
 }
 
 // Admin Login
