@@ -4,40 +4,55 @@
 #include<map>
 using namespace std;
 
-// Struct StudentInfo
-struct StudentInfo {
+// Class studentInfo
+class EachStudentInfo {
+private:
 	int StudentID;
 	string Name;
 	string Department;
+public:
+	EachStudentInfo(int _StudentID, string _Name, string _Department)
+	{
+		StudentID = _StudentID;
+		Name = _Name;
+		Department = _Department;
+	}
+	void Show_Info();
+	string getName();
 };
-
-// List Student Info 
-list<StudentInfo> Infopack = { 
-	{1, "ttaehyun", "AI"},
-	{2, "minari", "EE"},
-	{3, "Kodari", "EE"},
-	{4, "Gadari", "IRE"},
-	};
+void EachStudentInfo::Show_Info() {
+	cout << Name << "'s Info" << endl;
+	cout << "StudentID : " << StudentID << endl;
+	cout << "Department : " << Department << endl;
+}
+string EachStudentInfo::getName() {
+	return Name;
+}
+//List class studentInfo
+list<EachStudentInfo> ClassINFO = {
+	EachStudentInfo(1, "ttaehyun", "AI"),
+	EachStudentInfo(2, "minari", "EE"),
+	EachStudentInfo(3, "Kodari", "EE"),
+	EachStudentInfo(4, "Gadari", "IRE"),
+	EachStudentInfo(5, "Jota", "CS"),
+};
 
 // Admin - Show List
 void ShowList() {
-	for (auto iter = Infopack.begin(); iter != Infopack.end(); iter++) {
-		StudentInfo a = *iter;
-		cout << a.Name << " - Info"  << endl;
-		cout << "StudentID : " << a.StudentID << endl;
-		cout << "Department : " << a.Department << endl;
-		cout << endl;
+	for (auto iter = ClassINFO.begin(); iter != ClassINFO.end(); iter++) {
+		EachStudentInfo a = *iter;
+		a.Show_Info();
+
 	}
 	cout << endl;
 }
+
 // Student - Show List
 void ShowListMe(string name) {
-	for (auto iter = Infopack.begin(); iter != Infopack.end(); iter++) {
-		StudentInfo a = *iter;
-		if (a.Name == name) {
-			cout << a.Name << " - Info" << endl;
-			cout << "StudentID : " << a.StudentID << endl;
-			cout << "Department : " << a.Department << endl;
+	for (auto iter = ClassINFO.begin(); iter != ClassINFO.end(); iter++) {
+		EachStudentInfo a = *iter;
+		if (a.getName() == name) {
+			a.Show_Info();
 		}
 		else continue;
 	}

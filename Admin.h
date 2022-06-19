@@ -8,10 +8,10 @@ void Delete_Student() {
 	cout << "삭제할 이름을 입력하시오 : ";
 	cin >> name;
 	// Fix this
-	for (auto iter = Infopack.begin(); iter != Infopack.end(); iter++) {
-		StudentInfo a = *iter;
-		if (a.Name == name) {
-			Infopack.erase(iter);
+	for (auto iter = ClassINFO.begin(); iter != ClassINFO.end(); iter++) {
+		EachStudentInfo a = *iter;
+		if (a.getName() == name) {
+			
 		}
 		else continue;
 	}
