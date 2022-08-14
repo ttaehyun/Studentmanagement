@@ -1,16 +1,12 @@
 #include<iostream>
 #include "config.h"
 
-
-
-
-
 int main() {
 	bool main = true, loop_bool = true; 
 	int menu = 0;
 	File_read();
+	string id ="", pw="";
 	while (main) {
-		string id ="", pw="";
 		while (loop_bool) {
 			Menu_print();
 			menu = MenuSelect("main");

@@ -1,69 +1,89 @@
-#include<string>
-#include<iostream>
-#include<list>
-#include<map>
-using namespace std;
+#include "header.h"
 
 // Class studentInfo
 class EachStudentInfo {
 private:
-	int StudentID;
+	string StudentID;
 	string Name;
 	string Department;
 public:
-	EachStudentInfo(int _StudentID, string _Name, string _Department)
+	EachStudentInfo(string _StudentID, string _Name, string _Department)
 	{
 		StudentID = _StudentID;
 		Name = _Name;
 		Department = _Department;
 	}
-	void Show_Info();
+	string Get_Info();
 	string getName();
 };
-void EachStudentInfo::Show_Info() {
-	cout << Name << "'s Info" << endl;
-	cout << "StudentID : " << StudentID << endl;
-	cout << "Department : " << Department << endl;
+
+string EachStudentInfo::Get_Info() {
+	string str;
+	str = StudentID + " " + Department;
+	return str;
 }
 string EachStudentInfo::getName() {
 	return Name;
 }
-//List class studentInfo
-class ListInfo : public EachStudentInfo {
+
+//vector class 
+class ListInfo {
 private:
-	list<EachStudentInfo> ClassINFO;
+	vector<EachStudentInfo> ClassINFO;	//map 으로 수정? 
 public:
-	void DeleteList() {
-
-	}
+	/*ListInfo(string _Name, string _StudentID, string _Department)
+	{
+		ClassINFO.emplace_back(EachStudentInfo(_Name, _StudentID, _Department));
+	}*/
+	void Append(string);
+	string ContentList();
+	string ContentMe(string);
+	void Delete(string);
 };
-list<EachStudentInfo> ClassINFO; /*= {
-	EachStudentInfo(1, "ttaehyun", "AI"),
-	EachStudentInfo(2, "minari", "EE"),
-	EachStudentInfo(3, "Kodari", "EE"),
-	EachStudentInfo(4, "Gadari", "IRE"),
-	EachStudentInfo(5, "Jota", "CS"),
-};*/
 
-// Admin - Show List
-void ShowList() {
-	for (auto iter = ClassINFO.begin(); iter != ClassINFO.end(); iter++) {
-		EachStudentInfo a = *iter;
-		a.Show_Info();
+void ListInfo::Append(string line) {
+	vector<string> words;
+	string space = " ";
+	size_t pos = 0;
+	string last = "";
+	while ((pos = line.find(space)) != string::npos) {
+		words.push_back(line.substr(0, pos));
+		line.erase(0, pos + space.length());
+		last = line;
 	}
-	cout << endl;
+	words.push_back(last);
+	//cout << words.size();
+	ClassINFO.emplace_back(EachStudentInfo(words.at(1), words.at(0), words.at(2)));
 }
-
-// Student - Show List
-void ShowListMe(string name) {
+void ListInfo::Delete(string name) {
 	for (auto iter = ClassINFO.begin(); iter != ClassINFO.end(); iter++) {
 		EachStudentInfo a = *iter;
 		if (a.getName() == name) {
-			a.Show_Info();
+			ClassINFO.erase(iter);
+			break;
 		}
 		else continue;
 	}
-	cout << endl;
+}
+string ListInfo::ContentList() {
+	string str="";
+	for (auto iter = ClassINFO.begin(); iter != ClassINFO.end(); iter++) {
+		EachStudentInfo a = *iter;
+		str += a.getName() + " " + a.Get_Info() + "\n";
+	}
+	return str;
+}
+string ListInfo::ContentMe(string name) {
+	string str = "";
+	for (auto iter = ClassINFO.begin(); iter != ClassINFO.end(); iter++) {
+		EachStudentInfo a = *iter;
+		if (a.getName() == name) {
+			str += a.getName() + "\n" + a.Get_Info() + "\n";
+			break;
+		}
+		else continue;
+	}
+	return str;
 }
 
 // ID, PW File
@@ -73,52 +93,45 @@ private:
 	map<string, string> IdPw_Admin;
 	map<string, string> IdPw_Student;
 public:
-	// id, pw append
-	void Dict_append(string id, string pw) {
-		if (id == "Admin") {
-			IdPw_Admin.insert({ id,pw });
-		}
-		else IdPw_Student.insert({ id,pw });
+	string IDpasswordMe(string);
+	void Admin_append(string id, string pw) {
+		IdPw_Admin.insert({ id,pw });	// 관리자 id,pw 임시파일에 저장
+	};
+	void Guest_append(string id, string pw) {
+		IdPw_Student.insert({ id,pw }); // 게스트 id,pw 임시파일에 저장
 	};
 
 	// id, pw Delete
-	void Dict_Del(string id) {
-		if (id == "Admin") {
-			IdPw_Admin.erase(id);
-		}
-		else IdPw_Student.erase(id);
+	void Admin_Del(string id) {
+		IdPw_Admin.erase(id);
+	};
+	void Guest_Del(string id) {
+		IdPw_Student.erase(id);
 	};
 
-	string Content() {
+	string Admin_Content() {
+		string IDstring = "";
 		for (auto iter = IdPw_Admin.begin(); iter != IdPw_Admin.end(); iter++)
 		{
-			return iter->first + " " + iter->second;
+			IDstring += iter->first + " " + iter->second + "\n";
 		}
+		return IDstring;
 	}
-	// 저장된 id,pw보여줌
-	void Show() {
-		for (auto iter = IdPw_Admin.begin(); iter != IdPw_Admin.end(); iter++)
-		{
-			cout << iter->first << " " << iter->second << endl;
-		}
-		cout << endl;
+	string Student_content() {
+		string IDstring = "";
 		for (auto iter = IdPw_Student.begin(); iter != IdPw_Student.end(); iter++)
 		{
-			cout << iter->first << " " << iter->second << endl;
+			IDstring += iter->first + " " + iter->second + "\n";
 		}
-		cout << endl;
+		return IDstring;
 	}
+
 	// Find id in map
 	string Find(string id) {
-		if (id == "Admin") {
-			auto item = IdPw_Admin.find(id);
-			if (item != IdPw_Admin.end()) {
-				return item->second;
-			}
-			else {
-				cout << "존재하지 않는 ID입니다. " << endl;
-				return "err";
-			}
+
+		auto Firstitem = IdPw_Admin.find(id);
+		if (Firstitem != IdPw_Admin.end()) {
+			return Firstitem->second;
 		}
 		else {
 			auto item = IdPw_Student.find(id);
@@ -132,3 +145,16 @@ public:
 		}
 	}
 };
+
+string FileDictionary::IDpasswordMe(string name) {
+	string str;
+	for (auto iter = IdPw_Student.begin(); iter != IdPw_Student.end(); iter++)
+	{
+		if (iter->first == name) {
+			str += "ID : " + iter->first + "\n" + "PW : " + iter->second + "\n";
+			break;
+		}
+		else continue;
+	}
+	return str;
+}
